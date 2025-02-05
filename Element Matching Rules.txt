@@ -1,0 +1,8 @@
+[attribute = value]
+[name = email]
+
+for Id: tagname#Id
+input#inputPassword
+
+for class: tagname.classname
+input.inputClass
