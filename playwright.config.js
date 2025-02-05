@@ -16,7 +16,7 @@ export default defineConfig({
   testDir: "./tests",
   timeout: 30 * 1000,
   expect: {
-    timeout: 5000,
+    timeout: 2000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -35,6 +35,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     // trace: 'on-first-retry',
     // browserName: "chromium",
+    headless: false,
   },
 
   /* Configure projects for major browsers */
