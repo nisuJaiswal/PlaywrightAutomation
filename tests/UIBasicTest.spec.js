@@ -46,7 +46,37 @@ test("Logging in with correct credentials", async ({ page }) => {
   await page.locator("[name = 'password']").fill("learning");
   await page.locator("[type='submit']").click();
 
-  const firstElement = page.locator(".card-title").first();
+  // Get specific element
+  const firstElement = await page.locator(".card-body a").nth(3).textContent();
 
-  console.log(await firstElement.textContent());
+  //   Added this to letting the list loaded
+  await page.locator(".card-body a").first();
+
+  const allElements = await page.locator(".card-body a").allTextContents();
+
+  //   const allElements = await page.locator(".card-body a").allTextContents();
+
+  console.log(allElements);
+});
+
+// UI Components (Radio and Checkbox)
+test.only("UI Components Testing", async ({ page }) => {
+  await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+
+  await page.locator("input#username").fill("rahulshettyacademy");
+  await page.locator("[name = 'password']").fill("learning");
+
+  await page.locator("[data-style=btn-info]").selectOption("teach");
+
+  await page.locator(".radiotextsty").last().click();
+  //   Assertion for radio button
+  expect(await page.locator(".radiotextsty").last()).toBeChecked();
+  await page.locator("#okayBtn").click();
+
+  await page.locator("#terms").check();
+  await expect(page.locator("#terms")).toBeChecked();
+
+  //   await page.pause();
+
+  await page.locator("[type='submit']").click();
 });
