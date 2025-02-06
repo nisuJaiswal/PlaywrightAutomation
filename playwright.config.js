@@ -36,6 +36,8 @@ export default defineConfig({
     // trace: 'on-first-retry',
     // browserName: "chromium",
     headless: false,
+    trace: "on",
+    screenshot: "on",
   },
 
   /* Configure projects for major browsers */
