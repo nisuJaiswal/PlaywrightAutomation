@@ -60,7 +60,7 @@ test("Logging in with correct credentials", async ({ page }) => {
 });
 
 // UI Components (Radio and Checkbox)
-test.only("UI Components Testing", async ({ page }) => {
+test("UI Components Testing", async ({ page }) => {
   await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
   await page.locator("input#username").fill("rahulshettyacademy");
@@ -79,4 +79,19 @@ test.only("UI Components Testing", async ({ page }) => {
   //   await page.pause();
 
   await page.locator("[type='submit']").click();
+});
+
+// Handling the child window
+test.only("Child Window Management", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+
+  await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+
+  const [anotherPage] = await Promise.all([
+    ctx.waitForEvent("page"),
+    page.locator("[href*='documents-request']").click(),
+  ]);
+
+  console.log(await anotherPage.locator(".red").textContent());
 });
