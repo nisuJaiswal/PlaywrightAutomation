@@ -124,18 +124,18 @@ test.only("Assingment of Client App", async ({ page }) => {
       (await page.locator(".card-body").nth(i).locator("b").textContent()) ===
       targetProduct
     ) {
-      // Adding the target intem into the cart
+      // Adding the target item into the cart
       await page
         .locator(".card-body")
         .nth(i)
         .locator("text= Add To Cart")
         .click();
 
-      await page
-        .locator(".card-body")
-        .nth(i + 1)
-        .locator("text= Add To Cart")
-        .click();
+      // await page
+      //   .locator(".card-body")
+      //   .nth(i + 1)
+      //   .locator("text= Add To Cart")
+      //   .click();
       break;
     }
   }
@@ -191,5 +191,29 @@ test.only("Assingment of Client App", async ({ page }) => {
     .first()
     .textContent();
 
-  console.log(orderId);
+  // console.log(orderId);
+
+  // Going to orders page
+  await page.locator("[routerlink='/dashboard/myorders']").first().click();
+
+  // Accessing all the order rows
+  await page.locator("tbody").waitFor();
+  const allOrders = page.locator("tr.ng-star-inserted");
+
+  const ordersCount = await allOrders.count();
+
+  for (let i = 0; i < ordersCount; i++) {
+    let tempOrderId = await allOrders.nth(i).locator("th").textContent();
+    // console.log(tempOrderId);
+    if (orderId.includes(tempOrderId)) {
+      // await page.pause();
+      // Going to the order page
+      await allOrders.nth(i).locator("button").first().click();
+      break;
+    }
+  }
+
+  expect(
+    orderId.includes(await page.locator(".col-text").textContent())
+  ).toBeTruthy();
 });

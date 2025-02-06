@@ -16,7 +16,7 @@ export default defineConfig({
   testDir: "./tests",
   timeout: 30 * 1000,
   expect: {
-    timeout: 2000,
+    timeout: 5000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -59,8 +59,8 @@ export default defineConfig({
 
     /* Test against mobile viewports. */
     // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
+    //   name: "Mobile Chrome",
+    //   use: { ...devices["Pixel 5"] },
     // },
     // {
     //   name: 'Mobile Safari',
