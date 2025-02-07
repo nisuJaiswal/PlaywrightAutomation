@@ -1,4 +1,8 @@
 import { expect, test } from "@playwright/test";
+import { LoginPage } from "../pageObjects/LoginPage";
+import { Dashboard } from "../pageObjects/DashboardPage";
+import { POManager } from "../pageObjects/POManager";
+import { CheckoutPage } from "../pageObjects/CheckoutPage";
 
 // Testing using Browser method (Long)
 // test("Using Browser Method", async ({ browser }) => {
@@ -101,7 +105,64 @@ test("Child Window Management", async ({ browser }) => {
   // await page.pause();
 });
 
-test("Assingment of Client App", async ({ page }) => {
+test.only("Assingment of Client App", async ({ page }) => {
+  const email = "anshika@gmail.com";
+  const password = "Iamking@000";
+  const poManager = new POManager(page);
+
+  const loginPage = poManager.getLoginPage();
+  await loginPage.goto();
+  await loginPage.login(email, password);
+  // Search for product
+
+  const targetProduct = "IPHONE 13 PRO";
+
+  const dashboardPage = poManager.getDashboardPage();
+
+  // Waiting for let the page load the products on the screen
+  await page.waitForLoadState("networkidle");
+
+  await dashboardPage.addProductToCart(targetProduct);
+
+  // Goint to the cart page
+  await dashboardPage.navigateToCart();
+
+  const checkoutPage = poManager.getCheckoutPage();
+
+  // Searching for the recently added product
+  await checkoutPage.checkForAddedItem(targetProduct);
+
+  // Clicking on the Checkout
+  await checkoutPage.navigateToCheckout();
+
+  // Filling out the form values
+  await checkoutPage.fillCheckoutDetails(email);
+
+  // Clicking on the order
+  await checkoutPage.navigateToOrderDetails();
+
+  // Asserting Thank you message
+  const orderPage = poManager.getOrderPage();
+  await orderPage.checkforThankyouMsg();
+
+  // Extracting id
+  await orderPage.getOrderId();
+
+  // Going to orders page
+  await orderPage.navigateToOrderHistory();
+
+  // Accessing all the order rows
+  await page.locator("tbody").waitFor();
+
+  await orderPage.validateOrder();
+});
+
+// Screenshots
+test("Comparing the snapshots", async ({ page }) => {
+  await page.goto("https://google.com/");
+  expect(await page.screenshot()).toMatchSnapshot("google.png");
+});
+test("aAssingment of Client App", async ({ page }) => {
   const email = "anshika@gmail.com";
   await page.goto("https://rahulshettyacademy.com/client");
   await page.locator("input#userEmail").fill(email);
@@ -184,6 +245,7 @@ test("Assingment of Client App", async ({ page }) => {
   // Asserting Thank you message
   expect(page.locator(".hero-primary")).toHaveText(" Thankyou for the order. ");
 
+  await page.pause();
   // Extracting id
   const orderId = await page
     .locator(".em-spacer-1 .ng-star-inserted")
@@ -215,10 +277,4 @@ test("Assingment of Client App", async ({ page }) => {
   expect(
     orderId.includes(await page.locator(".col-text").textContent())
   ).toBeTruthy();
-});
-
-// Screenshots
-test.only("Comparing the snapshots", async ({ page }) => {
-  await page.goto("https://google.com/");
-  expect(await page.screenshot()).toMatchSnapshot("google.png");
 });
