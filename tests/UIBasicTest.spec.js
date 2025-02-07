@@ -101,7 +101,7 @@ test("Child Window Management", async ({ browser }) => {
   // await page.pause();
 });
 
-test.only("Assingment of Client App", async ({ page }) => {
+test("Assingment of Client App", async ({ page }) => {
   const email = "anshika@gmail.com";
   await page.goto("https://rahulshettyacademy.com/client");
   await page.locator("input#userEmail").fill(email);
@@ -215,4 +215,10 @@ test.only("Assingment of Client App", async ({ page }) => {
   expect(
     orderId.includes(await page.locator(".col-text").textContent())
   ).toBeTruthy();
+});
+
+// Screenshots
+test.only("Comparing the snapshots", async ({ page }) => {
+  await page.goto("https://google.com/");
+  expect(await page.screenshot()).toMatchSnapshot("google.png");
 });
