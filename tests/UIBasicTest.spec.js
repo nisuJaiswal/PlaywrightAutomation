@@ -175,7 +175,6 @@ test.only("Assingment of Client App", async ({ page }) => {
     }
   }
   // Applying coupon code
-
   await page.locator("[name='coupon']").fill("rahulshettyacademy");
   await page.locator("[type='submit']").click();
 
