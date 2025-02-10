@@ -1,21 +1,15 @@
 const { When, Given, Then } = require("@cucumber/cucumber");
-const playwright = require("@playwright/test");
-const { POManager } = require("../../pageObjects/POManager");
 
 Given(
   "a login to Ecommerce website with credentials {string} and {string}",
-  async (email, password) => {
-    const browser = await playwright.chromium.launch();
-    const context = await browser.newContext();
-    this.page = await context.newPage();
-    this.poManager = new POManager(this.page);
-
+  async function (email, password) {
+    const prod = await this.page.locator(".card-body");
     const loginPage = this.poManager.getLoginPage();
     await loginPage.goto();
     await loginPage.login(email, password);
   }
 );
-When("Add {string} to cart", async (product) => {
+When("Add {string} to cart", async function (product) {
   this.dashboardPage = this.poManager.getDashboardPage();
   // console.log(this.dashboardPage);
   // Waiting for let the page load the products on the screen
@@ -24,7 +18,7 @@ When("Add {string} to cart", async (product) => {
   await this.dashboardPage.addProductToCart(product);
 });
 
-Then("Verify {string} is displayed in the cart", async (product) => {
+Then("Verify {string} is displayed in the cart", async function (product) {
   await this.dashboardPage.navigateToCart();
 
   this.checkoutPage = this.poManager.getCheckoutPage();
@@ -33,7 +27,7 @@ Then("Verify {string} is displayed in the cart", async (product) => {
   await this.checkoutPage.checkForAddedItem(product);
 });
 
-When("Enter valid details, {string} and place order", async (email) => {
+When("Enter valid details, {string} and place order", async function (email) {
   await this.checkoutPage.navigateToCheckout();
 
   // Filling out the form values
@@ -50,7 +44,7 @@ When("Enter valid details, {string} and place order", async (email) => {
   await this.orderPage.getOrderId();
 });
 
-Then("Verify order in present history of orders", async () => {
+Then("Verify order in present history of orders", async function () {
   await this.orderPage.navigateToOrderHistory();
 
   // Accessing all the order rows
