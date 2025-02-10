@@ -281,7 +281,7 @@ test("aAssingment of Client App", async ({ page }) => {
   ).toBeTruthy();
 });
 
-customProp.only("Using custom Props", async ({ page, customData }) => {
+customProp("Using custom Props", async ({ page, customData }) => {
   const poManager = new POManager(page);
   const loginPage = poManager.getLoginPage();
   await loginPage.goto();
