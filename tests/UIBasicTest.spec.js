@@ -3,6 +3,7 @@ import { LoginPage } from "../pageObjects/LoginPage";
 import { Dashboard } from "../pageObjects/DashboardPage";
 import { POManager } from "../pageObjects/POManager";
 import { CheckoutPage } from "../pageObjects/CheckoutPage";
+import { customProp } from "../utils/test-base";
 
 // Testing using Browser method (Long)
 // test("Using Browser Method", async ({ browser }) => {
@@ -105,7 +106,7 @@ test("Child Window Management", async ({ browser }) => {
   // await page.pause();
 });
 
-test.only("Assingment of Client App", async ({ page }) => {
+test("Assingment of Client App", async ({ page }) => {
   const email = "anshika@gmail.com";
   const password = "Iamking@000";
   const poManager = new POManager(page);
@@ -277,4 +278,35 @@ test("aAssingment of Client App", async ({ page }) => {
   expect(
     orderId.includes(await page.locator(".col-text").textContent())
   ).toBeTruthy();
+});
+
+customProp.only("Using custom Props", async ({ page, customData }) => {
+  const poManager = new POManager(page);
+  const loginPage = poManager.getLoginPage();
+  await loginPage.goto();
+  await loginPage.login(customData.email, customData.password);
+  // Search for product
+
+  // const targetProduct = "IPHONE 13 PRO";
+
+  const dashboardPage = poManager.getDashboardPage();
+
+  // Waiting for let the page load the products on the screen
+  await page.waitForLoadState("networkidle");
+
+  await dashboardPage.addProductToCart(customData.targetProduct);
+
+  // Goint to the cart page
+  await dashboardPage.navigateToCart();
+
+  const checkoutPage = poManager.getCheckoutPage();
+
+  // Searching for the recently added product
+  await checkoutPage.checkForAddedItem(customData.targetProduct);
+
+  // Clicking on the Checkout
+  await checkoutPage.navigateToCheckout();
+
+  // Filling out the form values
+  await checkoutPage.fillCheckoutDetails(customData.email);
 });
