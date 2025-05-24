@@ -5,23 +5,23 @@ import { POManager } from "../pageObjects/POManager";
 import { CheckoutPage } from "../pageObjects/CheckoutPage";
 
 // Testing using Browser method (Long)
-// test("Using Browser Method", async ({ browser }) => {
-//   const context = await browser.newContext();
-//   const page = await context.newPage();
+test("Using Browser Method", async ({ browser }) => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
-//   await page.goto("https://google.com");
+  await page.goto("https://google.com");
 
-//   console.log(await page.title());
+  console.log(await page.title());
 
-//   await expect(page).toHaveTitle("Google");
-// });
+  await expect(page).toHaveTitle("Google");
+});
 
-// test("Using Default Parameter", async ({ browser, page }) => {
-//   await page.goto("https://www.youtube.com/");
+test("Using Default Parameter", async ({ browser, page }) => {
+  await page.goto("https://www.youtube.com/");
 
-//   console.log(await page.title());
-//   await expect(page).toHaveTitle("YouTube");
-// });
+  console.log(await page.title());
+  await expect(page).toHaveTitle("YouTube");
+});
 
 // Interacting with inputs:
 
@@ -115,7 +115,7 @@ test.only("Assingment of Client App", async ({ page }) => {
   await loginPage.login(email, password);
   // Search for product
 
-  const targetProduct = "IPHONE 13 PRO";
+  const targetProduct = "Banarsi Saree";
 
   const dashboardPage = poManager.getDashboardPage();
 
